@@ -53,7 +53,7 @@ namespace Awsim.Entity
         [SerializeField] KeyCode _rightTurnSignalKey = KeyCode.Alpha2;
         [SerializeField] KeyCode _hazardSignalKey = KeyCode.Alpha3;
         [SerializeField] KeyCode _noneSignalKey = KeyCode.Alpha4;
-        [SerializeField] Component _readonlyVehicleComponent = null;
+        [SerializeField] AccelVehicle _readonlyVehicleComponent = null;
         IReadOnlyAccelVehicle _readonlyVehicle = null;
 
         public void Initialize()
