@@ -663,7 +663,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: UNITY_CCU;ALLOW_AUTHORING;ROS2;HDRP
+    Standalone: UNITY_CCU;ALLOW_AUTHORING;ROS2;URP
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
