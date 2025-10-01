@@ -69,6 +69,8 @@ namespace Awsim.Scene.AutowareSimulationDemo
         [SerializeField] V2IRos2Publisher _v2iRosPublisher;
 
         [Header("Common")]
+
+        [SerializeField] bool _useVR;
         [SerializeField] ClockRos2Publisher _clockPublisher;
         [SerializeField] string _nodeName = "AWSIM";
         [SerializeField] TimeSourceType _timeSourceType;
@@ -124,19 +126,29 @@ namespace Awsim.Scene.AutowareSimulationDemo
                     xrSettings.Manager.StartSubsystems();
                     _vrCamera.gameObject.SetActive(true);
                     _followCamera.gameObject.SetActive(false);
-                }                
+                }
             }
             else
+            {
                 _egoVehicle.Initialize();
+                if (_useVR)
+                {
+                    var xrSettings = XRGeneralSettings.Instance;
+                    xrSettings.Manager.InitializeLoaderSync();
+                    xrSettings.Manager.StartSubsystems();
+                    _vrCamera.gameObject.SetActive(true);
+                    _followCamera.gameObject.SetActive(false);
+                }
+            }
 
             // Initialize function.
-            foreach (var e in _simplePedestrianWalkerControllers)
-                e.Initialize();
+            //foreach (var e in _simplePedestrianWalkerControllers)
+            //    e.Initialize();
 
-            if (_useJsonConfig)
-                _trafficSimulator.Initialize(jsonConfig.RandomTrafficSeed, jsonConfig.MaxVehicleCount);
-            else
-                _trafficSimulator.Initialize();
+            //if (_useJsonConfig)
+            //    _trafficSimulator.Initialize(jsonConfig.RandomTrafficSeed, jsonConfig.MaxVehicleCount);
+            //else
+            //    _trafficSimulator.Initialize();
 
             if (_useV2i)
             {
@@ -163,12 +175,12 @@ namespace Awsim.Scene.AutowareSimulationDemo
             _clockPublisher.OnUpdate();
 
             // Update traffic.
-            _trafficSimulator.OnUpdate();
+            //_trafficSimulator.OnUpdate();
 
             _awsimRvizPluginsClient.OnUpdate();
 
-            foreach (var e in _simplePedestrianWalkerControllers)
-                e.OnUpdate();
+            //foreach (var e in _simplePedestrianWalkerControllers)
+            //    e.OnUpdate();
 
             // Update ego vehicle.
             if (_egoVehicle != null)
@@ -184,10 +196,10 @@ namespace Awsim.Scene.AutowareSimulationDemo
         void FixedUpdate()
         {
             // Fixed update traffic.
-            _trafficSimulator.OnFixedUpdate();
+            //_trafficSimulator.OnFixedUpdate();
 
-            foreach (var e in _simplePedestrianWalkerControllers)
-                e.OnFixedUpdate();
+            //foreach (var e in _simplePedestrianWalkerControllers)
+            //    e.OnFixedUpdate();
 
             _awsimRvizPluginsClient.OnFixedUpdate();
 

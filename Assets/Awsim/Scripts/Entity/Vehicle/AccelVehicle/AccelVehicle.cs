@@ -309,6 +309,16 @@ namespace Awsim.Entity
         Quaternion _lastRotation = new Quaternion();
         Vector3 _lastAngularVelocity = Vector3.zero;
 
+        [SerializeField] Transform _steeringWheelTransform = null;
+
+        public bool invertTurn = false;
+
+        [SerializeField] public float steeringMultiplier = 12f;
+        public Vector3 localSteerAxis = Vector3.forward;
+        private Quaternion initialSteeringWheelRotation;
+
+        private float currentSteeringWheelRotation;
+
         /// <summary>
         /// Initialize vehicle.
         /// </summary>
@@ -321,6 +331,9 @@ namespace Awsim.Entity
 
             _firstOrderLaggedAcceleration = new FirstOrderLaggedFloat(_accelerationTimeConstant, AccelerationInput);
             _firstOrderLaggedSteerTireAngle = new FirstOrderLaggedFloat(_steerTireAngleTimeConstant, SteerTireAngleInput);
+
+            initialSteeringWheelRotation = _steeringWheelTransform.localRotation;
+            currentSteeringWheelRotation = 0f;
         }
 
         /// <summary>
@@ -331,6 +344,18 @@ namespace Awsim.Entity
         {
             foreach (var wheel in _wheels)
                 wheel.UpdateWheelVisual(ForwardSlipMultiplier);
+
+            if (_steeringWheelTransform == null) return;
+
+            float targetWheelRotation = -(_steerTireAngle * steeringMultiplier);
+            if (invertTurn) targetWheelRotation = -targetWheelRotation;
+
+            currentSteeringWheelRotation = Mathf.Lerp(currentSteeringWheelRotation, targetWheelRotation, Time.deltaTime * 10f);
+
+            Quaternion turnRotation = Quaternion.AngleAxis(currentSteeringWheelRotation, localSteerAxis);
+
+            _steeringWheelTransform.localRotation = initialSteeringWheelRotation * turnRotation;
+
         }
 
         /// <summary>
