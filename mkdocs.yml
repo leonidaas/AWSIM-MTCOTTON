@@ -1,4 +1,5 @@
 site_name: AWSIM
+site_url: https://leonidaas.github.io/AWSIM-MTCOTTON/
 
 theme:
   name: material
@@ -19,7 +20,6 @@ theme:
     repo: fontawesome/brands/github
     
   logo:
-  custom_dir: docs/Home/overrides
 
 extra_css:
   - stylesheets/extra.css
