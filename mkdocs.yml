@@ -58,8 +58,8 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
 
-repo_url: https://github.com/tier4/AWSIM
-repo_name: tier4/AWSIM
+repo_url: https://github.com/leonidaas/AWSIM-MTCOTTON
+repo_name: leonidaas/AWSIM-MTCOTTON
 
 nav:
   - Home: index.md
