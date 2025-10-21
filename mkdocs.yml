@@ -20,6 +20,7 @@ theme:
     repo: fontawesome/brands/github
     
   logo:
+  custom_dir: docs/Home/overrides
 
 extra_css:
   - stylesheets/extra.css
