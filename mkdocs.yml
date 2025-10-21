@@ -65,9 +65,9 @@ repo_name: leonidaas/AWSIM-MTCOTTON
 nav:
   - Home: index.md
   - Getting started:
-    - Quick start demo: GettingStarted/QuickStartDemo/index.md
-    - Demo details: GettingStarted/DemoDetails/index.md
-    - AWSIM concept: GettingStarted/AWSIMConcept/index.md
+    - Quick start demo: docs/GettingStarted/QuickStartDemo/index.md
+    - Demo details: docs/GettingStarted/DemoDetails/index.md
+    - AWSIM concept: docs/GettingStarted/AWSIMConcept/index.md
     - Advanced:
       - UsingOpenScenario: GettingStarted/Advanced/UsingOpenScenario/index.md
       - AwsimRvizPlugins: GettingStarted/Advanced/AwsimRvizPlugins/index.md
