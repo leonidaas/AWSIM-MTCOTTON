@@ -9,6 +9,7 @@ AWSIM on the left, Autoware on the right.
 |:--||
 |Vehicle|Lexus RX450h 2015|
 |Map|Japan tokyo nishi-shinjuku|
+|Map|Australia brisbane mount-cotton|
 |Sensors|LiDAR * 1 <br> Camera * 1 <br> GNSS * 1 <br> IMU * 1 <br>|
 |Traffic|Randomized traffic|
 |ROS2|humble|
