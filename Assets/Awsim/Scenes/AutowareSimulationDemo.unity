@@ -39778,7 +39778,7 @@ MonoBehaviour:
   _vrCamera: {fileID: 2146090865}
   _commandLineConfigParam: --json_path
   _useJsonConfig: 0
-  _jsonPath: /home/takatokimakino/main/github/tier4/AWSIM/Assets/Awsim/Scenes/AutowareSimulationDemo/sample-config.json
+  _jsonPath: Assets/Awsim/Scenes/AutowareSimulationDemo/sample-config.json
 --- !u!1 &1736600521
 GameObject:
   m_ObjectHideFlags: 0
@@ -47348,7 +47348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5266379721ffe114c8d1fcbf8f918d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trafficSignalID: 0
+  trafficSignalId: 0
   trafficSignalsTopic: /v2x/traffic_signals
   qosSettings:
     _reliabilityPolicy: 1
@@ -81650,7 +81650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _topic: /sensing/imu/tamagawa/imu_raw
-  _frameID: tamagawa/imu_link
+  _frameId: tamagawa/imu_link
   _qosSettings:
     _reliabilityPolicy: 1
     _durabilityPolicy: 2
@@ -84222,6 +84222,9 @@ MonoBehaviour:
   _ki: 0.2
   _kd: 0.05
   _minNormalizedSteeringTorque: 0.17
+  _selfAligningTorqueSpeedCoeff: 5.2
+  _selfAligningTorqueSteerCoeff: 1.8
+  _stationarySteeringResistance: 0.1
   _readonlyVehicleComponent: {fileID: 8966377323996319312}
   _controlModeBasedInputProvider: {fileID: 5265622565273616511}
 --- !u!23 &1336751533137462666
@@ -108176,6 +108179,7 @@ GameObject:
   - component: {fileID: 880617189346982338}
   - component: {fileID: 1869566379031801468}
   - component: {fileID: 8966377323996319313}
+  - component: {fileID: 8966377323996319314}
   m_Layer: 0
   m_Name: Lexus RX450h 2015
   m_TagString: Untagged
@@ -122849,6 +122853,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c62302a3-1cde-4005-9c97-e21e9e62ad2f
     m_ActionName: 'Vehicle/OverrideSteering[/LogitechG29DrivingForceRacingWheel/Base2]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e213b94-be27-45c6-a1b8-b1c481019402
+    m_ActionName: 'Vehicle/OnSwitchAutonomous[/LogitechG29DrivingForceRacingWheel/Base6]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Vehicle
@@ -211816,7 +211824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _imageTopic: /sensing/camera/traffic_light/image_raw
   _cameraInfoTopic: /sensing/camera/traffic_light/camera_info
-  _frameID: traffic_light_left_camera/camera_link
+  _frameId: traffic_light_left_camera/camera_optical_link
   _qosSettings:
     _reliabilityPolicy: 2
     _durabilityPolicy: 2
@@ -215176,6 +215184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outputHz: 1
+  _outputMode: 0
 --- !u!1 &6281015575899402631
 GameObject:
   m_ObjectHideFlags: 0
@@ -266830,11 +266839,11 @@ MonoBehaviour:
   _randomTrafficSims:
   - _enableSimulation: 1
     _trafficSimNpcVehiclePrefabs:
-    - {fileID: 1252738011092766975, guid: 6d7d303c5e4defa16b508cece3ef599e, type: 3}
-    - {fileID: 6165415753350049284, guid: a4db0a3241fc6cbcdb523a20abe25ec9, type: 3}
-    - {fileID: 6632081074653058128, guid: 2aab0ce90015ebadfadf702af88b666e, type: 3}
-    - {fileID: 7027408765914110385, guid: 467a68bbdca38cddda59c3c6af539d63, type: 3}
-    - {fileID: 8279803077700154773, guid: cd6e20f712013db92912be3accdca402, type: 3}
+    - {fileID: 2563257946706820547, guid: 6d7d303c5e4defa16b508cece3ef599e, type: 3}
+    - {fileID: -2738266875521181682, guid: a4db0a3241fc6cbcdb523a20abe25ec9, type: 3}
+    - {fileID: 6508327500362848844, guid: cd6e20f712013db92912be3accdca402, type: 3}
+    - {fileID: 8544599814613540701, guid: 2aab0ce90015ebadfadf702af88b666e, type: 3}
+    - {fileID: 8478247347008641927, guid: 467a68bbdca38cddda59c3c6af539d63, type: 3}
     _spawnableTrafficLanes:
     - {fileID: 226374874}
     - {fileID: 1362998551}
@@ -304595,8 +304604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2de5306b032962e9afa369cef49519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _poseTopic: /sensing/gnss/pose
+  _poseWithCovTopic: /sensing/gnss/pose_with_covariance
+  _mgrsFrame: map
   _navSatFixTopic: /sensing/gnss/ublox/nav_sat_fix
-  _frameID: map
+  _frameId: map
   _qosSettings:
     _reliabilityPolicy: 1
     _durabilityPolicy: 2
@@ -306635,8 +306647,9 @@ MonoBehaviour:
   sleepVelocityThreshold: 0.02
   _accelerationTimeConstant: 0
   _steerTireAngleTimeConstant: 0.05
-  _maxSteerTireAngle: 35
-  _maxAcceleration: 2
+  _maxSteerTireAngleInput: 35
+  _maxAccelerationInput: 2
+  _maxDecelerationInput: 2
   _decelerationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -306659,6 +306672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vehicleTransform: {fileID: 5884929512889163408}
   _vehicle: {fileID: 8966377323996319312}
+  _vehicleRigidbody: {fileID: 629329168438909061}
   _vehicleReportRos2Publisher: {fileID: 880617189346982338}
   _controlModeSrvServer: {fileID: 1869566379031801468}
   _controlModeBasedVehicleInputter: {fileID: 5265622565273616511}
@@ -306673,6 +306687,24 @@ MonoBehaviour:
   _cameraRos2Publisher: {fileID: 6147089113562499044}
   _gnssSensor: {fileID: 6278468240108714102}
   _gnssRos2Publisher: {fileID: 8890510153027706156}
+  _rtcAutoResponder: {fileID: 8966377323996319314}
+--- !u!114 &8966377323996319314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098086577014050188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91633742179e8cfb7a7ed27d06b09427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rtcStatusTopic: /api/external/get/rtc_status
+  _rtcCommandService: /api/external/set/rtc_commands
+  _egoStoppedVelocityThreshold: 0.1
+  _rtcStartDistanceThreshold: 10
+  _egoRigidbody: {fileID: 629329168438909061}
 --- !u!4 &8966417073124472055
 Transform:
   m_ObjectHideFlags: 0

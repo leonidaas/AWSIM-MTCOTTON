@@ -15,39 +15,31 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Awsim.Common;
+using Unity.Mathematics;
 
 namespace Awsim.Entity
 {
     public class AccelVehicleLogitechG29Input : MonoBehaviour, IAccelVehicleInput
     {
-        class PidController
+        [System.Serializable]
+        public class Settings
         {
-            public float Kp { get; set; }
-            public float Ki { get; set; }
-            public float Kd { get; set; }
-            float previousError = 0f;
-            float integral = 0f;
+            [SerializeField] string _devicePath;
+            [SerializeField] float _selfAligningTorqueCoeff;
 
-            public PidController(float kp, float ki, float kd)
+            public string DevicePath => _devicePath;
+            public float SteeringTorqueCoeff => _selfAligningTorqueCoeff;
+
+            // Default constructor for JsonUtility
+            public Settings()
             {
-                Kp = kp;
-                Ki = ki;
-                Kd = kd;
-                previousError = 0f;
-                integral = 0f;
             }
 
-            public float Compute(float setpoint, float actualValue, float deltaTime)
+            // Constructor for manual instantiation
+            public Settings(string devicePath, float selfAligningTorqueCoeff)
             {
-                float error = setpoint - actualValue;
-                integral += error * deltaTime;
-                float derivative = (error - previousError) / deltaTime;
-                previousError = error;
-                float direction = error < 0.0 ? -1.0f : 1.0f;
-                var result = Kp * error + Ki * integral + Kd * derivative;
-                result = Mathf.Clamp(Mathf.Abs(result), 0, 1) * direction;
-
-                return result;
+                this._devicePath = devicePath;
+                this._selfAligningTorqueCoeff = selfAligningTorqueCoeff;
             }
         }
 
@@ -66,6 +58,9 @@ namespace Awsim.Entity
         [SerializeField] float _ki = 0.2f;
         [SerializeField] float _kd = 0.05f;
         [SerializeField] float _minNormalizedSteeringTorque = 0.17f;
+        [SerializeField] float _selfAligningTorqueSpeedCoeff = 5.2f;
+        [SerializeField] float _selfAligningTorqueSteerCoeff = 1.8f;
+        [SerializeField, Range(0f, 0.1f)] float _stationarySteeringResistance = 0.1f;  // Steering resistance when stationary (0 - 0.1)
 
         [Header("Vehicle settings")]
         [SerializeField] Component _readonlyVehicleComponent = null;
@@ -77,6 +72,11 @@ namespace Awsim.Entity
         float _throttlePedalInput = 0;
         float _brakePedalInput = 0;
         bool _steeringOverride = false;
+
+        // For steering control when stationary
+        float _previousSteeringPos = 0;
+        float _steeringVelocity = 0;
+        const float _steeringVelocityThreshold = 0.01f;  // Velocity threshold to consider the steering wheel is moving
 
 
         public void Initialize()
@@ -92,9 +92,25 @@ namespace Awsim.Entity
             Connected = connected;
         }
 
-        public void Initialize(string devicePath)
+        public void Initialize(Settings settings)
         {
-            _devicePath = devicePath;
+            _devicePath = settings.DevicePath;
+
+            // Linear interpolation based on selfAligningTorqueCoeff
+            // When coeff = 1: speedCoeff = 4, steerCoeff = 1
+            // When coeff = 0: speedCoeff = 20, steerCoeff = 10
+            var coeff = Mathf.Clamp01(settings.SteeringTorqueCoeff);
+            if (coeff == 0)
+            {
+                _selfAligningTorqueSpeedCoeff = 0;
+                _selfAligningTorqueSteerCoeff = 0;
+            }
+            else
+            {
+                _selfAligningTorqueSpeedCoeff = Mathf.Lerp(10f, 4f, coeff);
+                _selfAligningTorqueSteerCoeff = Mathf.Lerp(5f, 1f, coeff);
+            }
+
 
             Initialize();
         }
@@ -105,6 +121,7 @@ namespace Awsim.Entity
                 return false;
 
             var isOverridden = false;
+            SwitchAutonomous = false;
             var currentControlMode = _controlModeBasedInputProvider.ControlMode;
 
             // ControlMode is manual.
@@ -142,23 +159,92 @@ namespace Awsim.Entity
 
             void ManuallyInput()
             {
+                if (_isOnSwitchAutonomous)
+                {
+                    SwitchAutonomous = true;
+                    _isOnSwitchAutonomous = false;
+                }
+
                 // Steering.
                 var currentPos = (float)LogitechG29Linux.GetPos();
-                SteerAngleInput = _readonlyVehicle.MaxSteerTireAngle * currentPos;
+                SteerAngleInput = _readonlyVehicle.MaxSteerTireAngleInput * currentPos;
 
                 // Pedal.
-                AccelerationInput = _readonlyVehicle.MaxAcceleration * _throttlePedalInput;
-                AccelerationInput += _readonlyVehicle.MaxAcceleration * _brakePedalInput * -1;
+                AccelerationInput = _readonlyVehicle.MaxAccelerationInput * _throttlePedalInput;
+                AccelerationInput += _readonlyVehicle.MaxDecelerationInput * _brakePedalInput * -1;
 
-                LogitechG29Linux.UploadEffect(0, 0);
+                // Steering is controlled by FFB.
+
+                if (Mathf.Abs(_readonlyVehicle.Speed) > 0)
+                {
+                    // Return steering to center based on vehicle speed
+                    var targetPos = 0f; // Target center position
+                    currentPos = (float)LogitechG29Linux.GetPos();
+
+                    // Get absolute value of steering angle
+                    var steeringAngleAbs = Mathf.Abs(currentPos);
+
+                    // Get absolute value of speed (assuming km/h units)
+                    var speedAbs = Mathf.Abs(_readonlyVehicle.Speed);
+
+                    // Calculate return factor based on speed and steering angle
+                    // Higher speed and larger steering angle result in faster return to center
+                    var speedFactor = Mathf.Clamp01(speedAbs / _selfAligningTorqueSpeedCoeff); // Maximum coefficient 1.0 at specified speed
+                    var steeringFactor = Mathf.Clamp01(steeringAngleAbs / _selfAligningTorqueSteerCoeff); // Maximum coefficient 1.0 at specified angle
+
+                    // Combine return factors (considering both factors)
+                    var returnFactor = Mathf.Lerp(0.1f, 1.0f, speedFactor * steeringFactor);
+
+                    // PID control for center return
+                    var pidResultRate = _pidController.Compute(targetPos, currentPos, Time.deltaTime);
+                    var sign = Mathf.Sign(pidResultRate);
+                    var clamped = Mathf.Clamp(Mathf.Abs(pidResultRate), _minNormalizedSteeringTorque, 1f);
+
+                    // Apply return factor to adjust torque
+                    var adjustedTorque = clamped * returnFactor;
+                    var finalNormalaizedTorque = sign * adjustedTorque;
+
+                    LogitechG29Linux.UploadEffect(finalNormalaizedTorque, Time.deltaTime);
+                }
+                else
+                {
+                    // When stationary: Apply resistance force only when steering wheel is moving
+                    currentPos = (float)LogitechG29Linux.GetPos();
+
+                    // Calculate steering velocity
+                    if (Time.deltaTime > 0)
+                    {
+                        _steeringVelocity = (currentPos - _previousSteeringPos) / Time.deltaTime;
+                    }
+                    _previousSteeringPos = currentPos;
+
+                    // Apply resistance force only when steering wheel is moving
+                    if (Mathf.Abs(_steeringVelocity) > _steeringVelocityThreshold && _stationarySteeringResistance > 0)
+                    {
+                        // Apply resistance force in opposite direction of movement (damping effect)
+                        var sign = -Mathf.Sign(_steeringVelocity);
+                        var resistanceTorque = _stationarySteeringResistance;
+                        var finalTorque = sign * resistanceTorque;
+
+                        LogitechG29Linux.UploadEffect(finalTorque, Time.deltaTime);
+                    }
+                    else
+                    {
+                        // Do not apply force when steering wheel is stationary (maintain position)
+                        LogitechG29Linux.UploadEffect(0, Time.deltaTime);
+                    }
+                }
             }
 
             return isOverridden;
         }
 
+
+        bool _isOnSwitchAutonomous = false;     // TODO: better name
+
         public void OnSwitchAutonomous(InputAction.CallbackContext context)
         {
-            SwitchAutonomous = true;
+            _isOnSwitchAutonomous = true;
         }
 
         // Fuctions called from player input event.

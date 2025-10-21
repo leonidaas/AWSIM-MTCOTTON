@@ -127,6 +127,15 @@ namespace Awsim.EgoVehicle
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnSwitchAutonomous"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e213b94-be27-45c6-a1b8-b1c481019402"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -250,6 +259,17 @@ namespace Awsim.EgoVehicle
                     ""action"": ""OverrideSteering"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0657169b-6bcc-4361-959b-bffeecb1f6dd"",
+                    ""path"": ""<Linux::LogitechInc::LogitechG29DrivingForceRacingWheel>/Base6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnSwitchAutonomous"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -330,6 +350,7 @@ namespace Awsim.EgoVehicle
             m_Vehicle_RightTurnSignal = m_Vehicle.FindAction("RightTurnSignal", throwIfNotFound: true);
             m_Vehicle_NoneTurnSignal = m_Vehicle.FindAction("NoneTurnSignal", throwIfNotFound: true);
             m_Vehicle_OverrideSteering = m_Vehicle.FindAction("OverrideSteering", throwIfNotFound: true);
+            m_Vehicle_OnSwitchAutonomous = m_Vehicle.FindAction("OnSwitchAutonomous", throwIfNotFound: true);
         }
 
         ~@Awsim()
@@ -407,6 +428,7 @@ namespace Awsim.EgoVehicle
         private readonly InputAction m_Vehicle_RightTurnSignal;
         private readonly InputAction m_Vehicle_NoneTurnSignal;
         private readonly InputAction m_Vehicle_OverrideSteering;
+        private readonly InputAction m_Vehicle_OnSwitchAutonomous;
         public struct VehicleActions
         {
             private @Awsim m_Wrapper;
@@ -422,6 +444,7 @@ namespace Awsim.EgoVehicle
             public InputAction @RightTurnSignal => m_Wrapper.m_Vehicle_RightTurnSignal;
             public InputAction @NoneTurnSignal => m_Wrapper.m_Vehicle_NoneTurnSignal;
             public InputAction @OverrideSteering => m_Wrapper.m_Vehicle_OverrideSteering;
+            public InputAction @OnSwitchAutonomous => m_Wrapper.m_Vehicle_OnSwitchAutonomous;
             public InputActionMap Get() { return m_Wrapper.m_Vehicle; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -464,6 +487,9 @@ namespace Awsim.EgoVehicle
                 @OverrideSteering.started += instance.OnOverrideSteering;
                 @OverrideSteering.performed += instance.OnOverrideSteering;
                 @OverrideSteering.canceled += instance.OnOverrideSteering;
+                @OnSwitchAutonomous.started += instance.OnOnSwitchAutonomous;
+                @OnSwitchAutonomous.performed += instance.OnOnSwitchAutonomous;
+                @OnSwitchAutonomous.canceled += instance.OnOnSwitchAutonomous;
             }
 
             private void UnregisterCallbacks(IVehicleActions instance)
@@ -501,6 +527,9 @@ namespace Awsim.EgoVehicle
                 @OverrideSteering.started -= instance.OnOverrideSteering;
                 @OverrideSteering.performed -= instance.OnOverrideSteering;
                 @OverrideSteering.canceled -= instance.OnOverrideSteering;
+                @OnSwitchAutonomous.started -= instance.OnOnSwitchAutonomous;
+                @OnSwitchAutonomous.performed -= instance.OnOnSwitchAutonomous;
+                @OnSwitchAutonomous.canceled -= instance.OnOnSwitchAutonomous;
             }
 
             public void RemoveCallbacks(IVehicleActions instance)
@@ -576,6 +605,7 @@ namespace Awsim.EgoVehicle
             void OnRightTurnSignal(InputAction.CallbackContext context);
             void OnNoneTurnSignal(InputAction.CallbackContext context);
             void OnOverrideSteering(InputAction.CallbackContext context);
+            void OnOnSwitchAutonomous(InputAction.CallbackContext context);
         }
     }
 }

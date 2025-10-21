@@ -1,10 +1,19 @@
 {
-    "TimeScale": 0.5,
+    "TimeScale": 1,
     "TimeSourceType": 0,
     "RandomTrafficSeed": 33,
     "MaxVehicleCount": 10,
     "LogitechG29DevicePath": "/dev/input/event21",
     "UseVR": false,
+    "LogitechG29Settings": {
+        "_devicePath": "/dev/input/event3",
+        "_selfAligningTorqueCoeff": 1.0
+    },
+    "EgoVehicleSettings": {
+        "_maxSteerTireAngleInput": 35,
+        "_maxAccelerationInput": 2,
+        "_maxDecelerationInput": 2
+    },
     "EgoPose": {
         "Position": {
             "x": 81381.7265625,

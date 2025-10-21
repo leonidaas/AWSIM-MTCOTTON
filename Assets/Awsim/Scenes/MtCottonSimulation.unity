@@ -7304,6 +7304,9 @@ MonoBehaviour:
   _ki: 0.2
   _kd: 0.05
   _minNormalizedSteeringTorque: 0.17
+  _selfAligningTorqueSpeedCoeff: 5.2
+  _selfAligningTorqueSteerCoeff: 1.8
+  _stationarySteeringResistance: 0.1
   _readonlyVehicleComponent: {fileID: 337043163}
   _controlModeBasedInputProvider: {fileID: 53136437}
 --- !u!114 &53136435
@@ -41896,8 +41899,9 @@ MonoBehaviour:
   sleepVelocityThreshold: 0.02
   _accelerationTimeConstant: 0
   _steerTireAngleTimeConstant: 0
-  _maxSteerTireAngle: 35
-  _maxAcceleration: 2
+  _maxSteerTireAngleInput: 35
+  _maxAccelerationInput: 1.5
+  _maxDecelerationInput: 3.5
   _decelerationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -41965,6 +41969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vehicleTransform: {fileID: 543450653363255603}
   _vehicle: {fileID: 337043163}
+  _vehicleRigidbody: {fileID: 337043164}
   _vehicleReportRos2Publisher: {fileID: 337043167}
   _controlModeSrvServer: {fileID: 337043165}
   _controlModeBasedVehicleInputter: {fileID: 53136437}
@@ -41979,6 +41984,7 @@ MonoBehaviour:
   _cameraRos2Publisher: {fileID: 1206109599}
   _gnssSensor: {fileID: 1827309974}
   _gnssRos2Publisher: {fileID: 1827309973}
+  _rtcAutoResponder: {fileID: 919132149357732746}
 --- !u!114 &337043167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228616,6 +228622,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2de5306b032962e9afa369cef49519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _poseTopic: /sensing/gnss/pose
+  _poseWithCovTopic: /sensing/gnss/pose_with_covariance
+  _mgrsFrame: /gnss_link
   _navSatFixTopic: /sensing/gnss/ublox/nav_sat_fix
   _frameId: map
   _qosSettings:
@@ -228637,6 +228646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outputHz: 1
+  _outputMode: 0
 --- !u!1 &1828376069 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3265979504812484687, guid: b77fd36bd5bdf431b93a0a4747187371, type: 3}
@@ -280596,6 +280606,7 @@ GameObject:
   - component: {fileID: 337043167}
   - component: {fileID: 337043166}
   - component: {fileID: 337043165}
+  - component: {fileID: 919132149357732746}
   m_Layer: 0
   m_Name: Zoe2
   m_TagString: Untagged
@@ -280603,6 +280614,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132149357732746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149357732745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91633742179e8cfb7a7ed27d06b09427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rtcStatusTopic: /api/external/get/rtc_status
+  _rtcCommandService: /api/external/set/rtc_commands
+  _egoStoppedVelocityThreshold: 0.1
+  _rtcStartDistanceThreshold: 10
+  _egoRigidbody: {fileID: 337043164}
 --- !u!33 &920033855886034485
 MeshFilter:
   m_ObjectHideFlags: 0

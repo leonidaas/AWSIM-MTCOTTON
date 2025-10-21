@@ -26,6 +26,7 @@ namespace Awsim.Scene.AutowareSimulationDemo
         [Header("Ego Vehicle")]
         [SerializeField] Transform _vehicleTransform;
         [SerializeField] AccelVehicle _vehicle;
+        [SerializeField] Rigidbody _vehicleRigidbody;
         [SerializeField] AccelVehicleReportRos2Publisher _vehicleReportRos2Publisher;
         [SerializeField] AccelVehicleControlModeSrvServer _controlModeSrvServer;
         [SerializeField] AccelVehicleControlModeBasedInputter _controlModeBasedVehicleInputter;
@@ -42,21 +43,20 @@ namespace Awsim.Scene.AutowareSimulationDemo
         [SerializeField] CameraRos2Publisher _cameraRos2Publisher;
         [SerializeField] GnssSensor _gnssSensor;
         [SerializeField] GnssRos2Publisher _gnssRos2Publisher;
+        [SerializeField] RtcAutoResponder _rtcAutoResponder;
 
-        public void Initialize(string logitechG29DevicePath, Vector3 initialVehiclePosition, Quaternion initialVehicleRotation)
+        public void Initialize(AccelVehicleLogitechG29Input.Settings logitechG29Settings, AccelVehicle.Settings accelVehicleSettings, Vector3 initialVehiclePosition, Quaternion initialVehicleRotation)
         {
             // Vehicle.
-            _vehicle.Initialize();
+            _vehicle.Initialize(accelVehicleSettings);
             _controlModeBasedVehicleInputter.Initialize();
             _controlModeSrvServer.Initialize();
             _vehicleReportRos2Publisher.Initialize();
             _vehicleVisualEffect.Initialize();
             _keyboardVehicleInput.Initialize();
             _ros2VehicleInput.Initialize();
-            _logitechG29VehicleInput.Initialize(logitechG29DevicePath);
-            _vehicleTransform.position = initialVehiclePosition;
-            _vehicleTransform.rotation = initialVehicleRotation;
-
+            _logitechG29VehicleInput.Initialize(logitechG29Settings);
+            SetPositionAndRotation(initialVehiclePosition, initialVehicleRotation);
             // Sensor.
             _imuSensor.Initialize();
             _imuRos2Publisher.Initialize();
@@ -85,6 +85,7 @@ namespace Awsim.Scene.AutowareSimulationDemo
             _cameraRos2Publisher.Initialize();
             _gnssSensor.Initialize();
             _gnssRos2Publisher.Initialize();
+            _rtcAutoResponder.Initialize();
         }
 
         public void OnUpdate()
@@ -103,6 +104,26 @@ namespace Awsim.Scene.AutowareSimulationDemo
 
             // Sensor.
             _imuSensor.OnFixedUpdate();
+            _rtcAutoResponder.OnFixedUpdate();
+        }
+
+        void SetPositionAndRotation(Vector3 rosPosition, Quaternion rosRotation)
+        {
+            Vector3 unityPos = new Vector3(
+                -rosPosition.y,  
+                rosPosition.z,   
+                rosPosition.x    
+            );
+
+            Quaternion unityRot = new Quaternion(
+                rosRotation.y,
+                -rosRotation.z,
+                rosRotation.x,
+                rosRotation.w
+            );
+
+            _vehicleRigidbody.position = unityPos;
+            _vehicleRigidbody.rotation = unityRot;
         }
     }
 }
