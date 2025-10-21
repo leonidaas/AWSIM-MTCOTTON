@@ -32,9 +32,11 @@ AWSIM is the best digital twin simulator for [Autoware](https://github.com/autow
 
 ## Tutorial
 
-First, try the tutorial !  
+First, try the official tutorial !  
 [AWSIM Document - Quick Start Demo](https://tier4.github.io/AWSIM/GettingStarted/QuickStartDemo/)
 
+Try the Mount Cotton Demo, too
+[AWSIM-MTCOTTON Document - Quick Start Demo](https://leonidaas.github.io/AWSIM-MTCOTTON/GettingStarted/QuickStartDemo/)
 ## Documentation
 
 https://tier4.github.io/AWSIM/
