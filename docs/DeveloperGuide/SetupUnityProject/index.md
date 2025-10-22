@@ -89,13 +89,13 @@ AWSIM comes with a *standalone* flavor of [`Ros2ForUnity`](../../Components/ROS2
 
 1. Git clone AWSIM repository.
     ```
-    git clone git@github.com:tier4/AWSIM.git
+    git@github.com:leonidaas/AWSIM-MTCOTTON.git
     ```
 
 1. Open AWSIM project.
     Open a terminal and launch Unity Editor with the following command (adjust the path if necessary):  
     ```bash  
-    ~/Unity/Hub/Editor/6000.0.34f1/Editor/Unity -projectPath "/home/user/AWSIM/"
+    ~/Unity/Hub/Editor/6000.0.34f1/Editor/Unity -projectPath "/home/user/AWSIM-MTCOTTON/"
     ```
     This ensures that the environment variables set in `~/.bashrc` are applied correctly.
 
@@ -139,12 +139,12 @@ AWSIM comes with a *standalone* flavor of [`Ros2ForUnity`](../../Components/ROS2
         
 ## 4. Import external packages
 
-1. Download `Shinjuku.unitypackage`
+1. Download `MtCotton.unitypackage`
 
-    [Download Shinjuku.unitypackage](https://github.com/tier4/AWSIM/releases/download/v2.0.0/Shinjuku.unitypackage){ .md-button }
+    [Download MtCotton.unitypackage](https://github.com/leonidaas/AWSIM-MTCOTTON/releases/download/v1.0.0/MtCotton.unitypackage){ .md-button }
 
-1. In Unity Editor, from the menu bar at the top, select `Assets -> Import Package -> Custom Package...` and navigate the `Shinjuku.unitypackage` file.
-1. `Shinjuku.unitypackage` package has been successfully imported under `Assets\AWSIM\Externals` directory.
+1. In Unity Editor, from the menu bar at the top, select `Assets -> Import Package -> Custom Package...` and navigate the `MtCotton.unitypackage` file.
+1. `MtCotton.unitypackage` package has been successfully imported under `Assets\AWSIM\Externals` directory.
     
     !!! info
 
