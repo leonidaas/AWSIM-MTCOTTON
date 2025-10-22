@@ -7,11 +7,9 @@ AWSIM on the left, Autoware on the right.
 
 |AWSIM demo contents||
 |:--||
-|Vehicle|Lexus RX450h 2015|
-|Map|Japan tokyo nishi-shinjuku|
+|Vehicle|Zoe2 2018|
 |Map|Australia brisbane mount-cotton|
 |Sensors|LiDAR * 1 <br> Camera * 1 <br> GNSS * 1 <br> IMU * 1 <br>|
-|Traffic|Randomized traffic|
 |ROS2|humble|
 
 ## 1. Preparation
@@ -44,16 +42,16 @@ Please follow the official Autoware documentation for configuring localhost:
 
 1. Clone [Autoware](https://github.com/autowarefoundation/autoware) and move to the directory.
     ```
-    git clone https://github.com/autowarefoundation/autoware.git &&
+    git clone git@github.com:leonidaas/autoware.git &&
     cd autoware
     ```
 
-1. Use the `main` branch. Please check current branch.
+1. Use the `develop` branch. Please check current branch.
     ```
     git branch
     ```
     ``` { .yaml .no-copy}
-    * main
+    * develop
     ```
 1. Configure the environment.
     ```
