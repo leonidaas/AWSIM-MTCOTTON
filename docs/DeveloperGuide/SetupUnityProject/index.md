@@ -150,6 +150,10 @@ AWSIM comes with a *standalone* flavor of [`Ros2ForUnity`](../../Components/ROS2
 
         The `Externals` directory is added to the `.gitignore` because the map has a large file size and should not be directly uploaded to the repository.
 
+## 5. Switch to URP Rendering
+In order for the AutowareSimulationDemo to run properly the SRP needs to be switched to UDP. Please refer to
+[Switch SRP](../SwitchSrp/index.md){ .md-button }
+
 ## 5. Run the demo in Editor
 The following steps describe how to run the demo in Unity Editor:
 
