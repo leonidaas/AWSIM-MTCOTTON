@@ -154,7 +154,7 @@ AWSIM comes with a *standalone* flavor of [`Ros2ForUnity`](../../Components/ROS2
 In order for the AutowareSimulationDemo to run properly the SRP needs to be switched to UDP. Please refer to
 [Switch SRP](../SwitchSrp/index.md){ .md-button }
 
-## 5. Run the demo in Editor
+## 6. Run the demo in Editor
 The following steps describe how to run the demo in Unity Editor:
 
 1. Open the `AutowareSimulationDemo.unity` scene placed under `Assets/AWSIM/Scenes/` directory.
