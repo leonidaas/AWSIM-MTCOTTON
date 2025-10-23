@@ -1,9 +1,8 @@
-# AWSIM
+# AWSIM Mount Cotton
+This is a fork of the official [AWSIM](https://github.com/tier4/AWSIM/releases/tag/v2.0.0) 
+Please refer to the official documentation if you a just starting out with AWSIM.
+This is a specialised fork for a custom environment based in Australia.
 
-> [!NOTE]  
-> **v2.0.0 has been released!**  
-> **Please check [v2.0.0 release note](https://github.com/tier4/AWSIM/releases/tag/v2.0.0)**
- 
 ![](/README_img/AWSIM-Autoware.png)
 
 AWSIM is the best digital twin simulator for [Autoware](https://github.com/autowarefoundation/autoware).
@@ -11,34 +10,30 @@ AWSIM is the best digital twin simulator for [Autoware](https://github.com/autow
 ## Features
 
 - Optimally integrated simulation with Autoware
-- Distribution of demo simulations highly optimized for Autoware
 - ROS2 native communications and environments
 - Use the same ROS2 topics and messages as the actual vehicle
 - Vehicle dynamics optimized for Autoware
 - Support for Autoware's vehicle control mode
-- Support Logitech G29 steering wheels
 - Ray tracing lidar sensor simulation
 - Open CV camera sensor simulation
 - IMU, GNSS sensor simulation
 - Controllable time scale
 - Support V2I development
-- Random traffic simulation. Seed values can also be fixed
-- point cloud generation
-- Switchable between HDRP and URP
-- Focus on customizability through coding
-- Support ASAM OpenSCENARIO (connecting scenario simulator v2)
-- Simple and highly expandable layered architecture
-- Controlling the execution order of C# code independent of Unity's script execution order
+- VR Support
 
 ## Tutorial
+Try the Mount Cotton Demo here
+[AWSIM-MTCOTTON Document - Quick Start Demo](https://leonidaas.github.io/AWSIM-MTCOTTON/GettingStarted/QuickStartDemo/)
 
-First, try the official tutorial !  
+
+For the official TIERIV demo please refer to the official documentation.
 [AWSIM Document - Quick Start Demo](https://tier4.github.io/AWSIM/GettingStarted/QuickStartDemo/)
 
-Try the Mount Cotton Demo, too
-[AWSIM-MTCOTTON Document - Quick Start Demo](https://leonidaas.github.io/AWSIM-MTCOTTON/GettingStarted/QuickStartDemo/)
 ## Documentation
+Mount Cotton:
+https://leonidaas.github.io/AWSIM-MTCOTTON/
 
+Official TIERIV:
 https://tier4.github.io/AWSIM/
 
 ## License
@@ -53,7 +48,11 @@ Applies to `tier4/AWSIM` repositories and all content contained in the [Releases
 See also [LICENSE](./LICENSE)
 
 ## Contact
+Questions regarding this repository:
+e-mail: leon.fuessner@hotmail.de
 
+
+For official AWSIM questions:
 日本語/English OK
 
 GitHub issue : [https://github.com/tier4/AWSIM/issues](https://github.com/tier4/AWSIM/issues)  
