@@ -202,11 +202,13 @@ It is recommended to launch in the order of `1.AWSIM -> 2.Autoware`. Same proced
 
             `<your mapfile location>` must be changed arbitrarily. When specifying the path the `~` operator cannot be used - please specify absolute full path.
 
-        <popup-img src="image_3.png" alt="image_3"></popup-img>
-
 1. Start autonomous driving !
 
-    1. With both AWSIM and Autoware activated, check if the vehicle's self-position estimation is normal.
+    1. With both AWSIM and Autoware activated, check if the vehicle's self-position estimation is normal. If self initialising is not working. Select 2D Pose Estimate and select the position of the car in AWSIM.
+
+        <popup-img src="image_3.png" alt="image_3"></popup-img>
+
+        Wait until the car shows up in Autoware.
 
         <popup-img src="image_4_text.png" alt="image_4_text"></popup-img>
 
