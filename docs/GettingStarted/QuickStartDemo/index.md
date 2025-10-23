@@ -74,7 +74,7 @@ Please follow the official Autoware documentation for configuring localhost:
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w"
     ```
 
-## 3. Download AWSIM demo
+## 3. Download MTCOTTON-Demo
 
 1. Install nvidia gpu driver (Skip if already installed).
     1. Add nvidia driver to apt repository.
@@ -127,12 +127,12 @@ Please follow the official Autoware documentation for configuring localhost:
     ```
 
 1. Download AWSIM demo.
-    1. Download `AWSIM-Demo.zip`. 
+    1. Download `MTCOTTON-DEMO.zip`. 
     
-        [Download AWSIM-Demo.zip](https://github.com/tier4/AWSIM/releases/download/v2.0.0/AWSIM-Demo.zip){ .md-button }
+        [Download MTCOTTON-DEMO.zip](https://github.com/leonidaas/AWSIM-MTCOTTON/releases/download/1.0.0/MTCOTTON-DEMO.zip){ .md-button }
 
     1. Unzip the downloaded file.
-    1. Make the `AWSIM-Demo.x86_64` file executable. Rightclick the `AWSIM-Demo.x86_64` file and check the `Execute` checkbox.
+    1. Make the `MtCotton.x86_64` file executable. Rightclick the `MtCotton.x86_64` file and check the `Execute` checkbox.
     <popup-img src="image_1.png" alt="image_1"></popup-img>
         
         or execute the command below.
@@ -141,7 +141,7 @@ Please follow the official Autoware documentation for configuring localhost:
     ```
     
         !!! info
-            If `AWSIM-Demo` is hefty, try [AWSIM-Demo-LightWeight](https://github.com/tier4/AWSIM/releases/download/v2.0.0/AWSIM-Demo-Lightweight.zip), a lightweight version.
+            `MtCotton.x86_64` has to be executed from a terminal WITHOUT ROS2 being sourced in the same terminal.
 
 
 ## 4. Run AWSIM and Autoware
@@ -149,7 +149,7 @@ Please follow the official Autoware documentation for configuring localhost:
 It is recommended to launch in the order of `1.AWSIM -> 2.Autoware`. Same procedure as the actual autoware's real vehicle.
 
 1. Launch AWSIM demo
-    1. Double-click `AWSIM-Demo.x86_64` to start it.
+    1. Run `MtCotton.x86_64` from the terminal to start it.
     <popup-img src="image_2.png" alt="image_2"></popup-img>
 
     1. Check ros2 topic list (optional)
@@ -185,11 +185,11 @@ It is recommended to launch in the order of `1.AWSIM -> 2.Autoware`. Same proced
 
 1. Launch Autoware
 
-    1. Download `Shinjuku-Map.zip` and unzip them.  
-        [Download Shinjuku-Map.zip](https://github.com/tier4/AWSIM/releases/download/v2.0.0/Shinjuku-Map.zip){ .md-button }
+    1. Download `mtcotton_map.zip` and unzip them.  
+        [Download mtcotton_map.zip](https://github.com/leonidaas/AWSIM-MTCOTTON/releases/download/1.0.0/mtcotton_map.zip){ .md-button }
         
         !!! info
-            Autoware-shinjuku-map.zip file contains map files for `pcd` and `osm`.
+            mtcotton_map.zip file contains map files for `pcd` and `osm`.
 
     1. Launch Autoware.
 
