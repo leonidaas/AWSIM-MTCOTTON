@@ -46,12 +46,12 @@ Please follow the official Autoware documentation for configuring localhost:
     cd autoware
     ```
 
-1. Use the `develop` branch. Please check current branch.
+1. Use the `main` branch. Please check current branch.
     ```
     git branch
     ```
     ``` { .yaml .no-copy}
-    * develop
+    * main
     ```
 1. Configure the environment.
     ```
